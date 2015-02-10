@@ -1,18 +1,20 @@
 var canvas = document.getElementById("game");
-var c = canvas.getContext("2d");
+var ctx = canvas.getContext("2d");
 var gameTimer;
 var lives = 5;
 var score = 0;
 var frogx = 250;
 var frogy = 380;
-var cars = [new Car(0, 72, 4), new Car(0, 122, 10), new Car(0, 172, 7), new Car(0, 222, 10), new Car(0, 272, 7), new Car(0, 322, 4)];
+var cars = [ new Car(0, 72, 4), new Car(0, 122, 10),
+             new Car(0, 172, 7), new Car(0, 222, 10),
+             new Car(0, 272, 7), new Car(0, 322, 4)];
 
 function main() {
 	drawBkg();
 	drawInfo();
 	drawFrog();
-	document.addEventListener("keydown", function (e) {
-		moveFrog(e.keyCode);
+	document.addEventListener("keydown", function (evt) {
+		moveFrog(evt.keyCode);
 	});
 	gameTimer = setInterval(function () { gameStart(); }, 50);
 }
@@ -27,21 +29,21 @@ function gameStart() {
 }
 
 function drawBkg () {
-	c.fillStyle = "#006600";
-	c.fillRect(0, 0, 500, 50);
-	c.fillRect(0, 350, 500, 50);
-	c.fillStyle = "#FFFFFF";
-	c.fillRect(0, 99, 500, 2);
-	c.fillRect(0, 149, 500, 2);
-	c.fillRect(0, 199, 500, 2);
-	c.fillRect(0, 249, 500, 2);
-	c.fillRect(0, 299, 500, 2);
+	ctx.fillStyle = "#006600";
+	ctx.fillRect(0, 0, 500, 50);
+	ctx.fillRect(0, 350, 500, 50);
+	ctx.fillStyle = "#FFFFFF";
+	ctx.fillRect(0, 99, 500, 2);
+	ctx.fillRect(0, 149, 500, 2);
+	ctx.fillRect(0, 199, 500, 2);
+	ctx.fillRect(0, 249, 500, 2);
+	ctx.fillRect(0, 299, 500, 2);
 }
 
 function drawInfo () {
-	c.font = "20px Arial";
-	c.fillText("Lives: " + lives, 10, 20);
-	c.fillText("Score: " + score, 10, 40);
+	ctx.font = "20px Arial";
+	ctx.fillText("Lives: " + lives, 10, 20);
+	ctx.fillText("Score: " + score, 10, 40);
 }
 
 function drawCars () {
@@ -53,21 +55,21 @@ function drawCars () {
 		}
 	}
 	for (i in cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(cars[i].x, cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
+		ctx.fillStyle = "#FF0000";
+		ctx.beginPath();
+		ctx.arc(cars[i].x, cars[i].y, 20, 0, 2*Math.PI);
+		ctx.fill();
+		ctx.closePath();
 		cars[i].x += cars[i].speed;
 	}
 }
 
 function drawFrog () {
-	c.fillStyle = "#00FF00";
-	c.beginPath();
-	c.arc(frogx, frogy, 20, 0, 2*Math.PI);
-	c.fill();
-	c.closePath();
+	ctx.fillStyle = "#00FF00";
+	ctx.beginPath();
+	ctx.arc(frogx, frogy, 20, 0, 2*Math.PI);
+	ctx.fill();
+	ctx.closePath();
 }
 
 function moveFrog (key) {
@@ -106,11 +108,11 @@ function gameLose () {
 	frogx = 250;
 	frogy = 375;
 	if (lives <= 0) {
-		c.fillStyle = "#000000";
-		c.fillRect(0, 0, 500, 400);
-		c.fillStyle = "#FFFFFF";
-		c.fillText("GAME OVER", 200, 190);
-		c.fillText("SCORE: " + score, 200, 210);
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(0, 0, 500, 400);
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillText("GAME OVER", 200, 190);
+		ctx.fillText("SCORE: " + score, 200, 210);
 		clearInterval(gameTimer);
 	}
 }
