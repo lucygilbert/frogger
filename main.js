@@ -5,12 +5,7 @@ var lives = 5;
 var score = 0;
 var frogx = 250;
 var frogy = 380;
-var lane1Cars = [new Car(0, 72)];
-var lane2Cars = [new Car(0, 122)];
-var lane3Cars = [new Car(0, 172)];
-var lane4Cars = [new Car(0, 222)];
-var lane5Cars = [new Car(0, 272)];
-var lane6Cars = [new Car(0, 322)];
+var cars = [new Car(0, 72, 4), new Car(0, 122, 10), new Car(0, 172, 7), new Car(0, 222, 10), new Car(0, 272, 7), new Car(0, 322, 4)];
 
 function main() {
 	drawBkg();
@@ -50,87 +45,20 @@ function drawInfo () {
 }
 
 function drawCars () {
-	if (lane1Cars[lane1Cars.length - 1].x > 500) {
-		lane1Cars.pop();
-		var newCar = new Car(0, 72);
-		lane1Cars.unshift(newCar);
+	for (i in cars) {
+		if (cars[i].x > 500) {
+			var newCar = new Car(0, cars[i].y, cars[i].speed);
+			cars.push(newCar);
+			cars.splice(i, 1);
+		}
 	}
-	if (lane2Cars[lane2Cars.length - 1].x > 500) {
-		lane2Cars.pop();
-		var newCar = new Car(0, 122);
-		lane2Cars.unshift(newCar);
-	}
-	if (lane3Cars[lane3Cars.length - 1].x > 500) {
-		lane3Cars.pop();
-		var newCar = new Car(0, 172);
-		lane3Cars.unshift(newCar);
-		
-	}
-	if (lane4Cars[lane4Cars.length - 1].x > 500) {
-		lane4Cars.pop();
-		var newCar = new Car(0, 222);
-		lane4Cars.unshift(newCar);
-		
-	}
-	if (lane5Cars[lane5Cars.length - 1].x > 500) {
-		lane5Cars.pop();
-		var newCar = new Car(0, 272);
-		lane5Cars.unshift(newCar);
-		
-	}
-	if (lane6Cars[lane6Cars.length - 1].x > 500) {
-		lane6Cars.pop();
-		var newCar = new Car(0, 322);
-		lane6Cars.unshift(newCar);
-		
-	}
-	for (i in lane1Cars) {
+	for (i in cars) {
 		c.fillStyle = "#FF0000";
 		c.beginPath();
-		c.arc(lane1Cars[i].x, lane1Cars[i].y, 20, 0, 2*Math.PI);
+		c.arc(cars[i].x, cars[i].y, 20, 0, 2*Math.PI);
 		c.fill();
 		c.closePath();
-		lane1Cars[i].x += 4;
-	}
-	for (i in lane2Cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(lane2Cars[i].x, lane2Cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
-		lane2Cars[i].x += 10;
-	}
-	for (i in lane3Cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(lane3Cars[i].x, lane3Cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
-		lane3Cars[i].x += 7;
-	}
-	for (i in lane4Cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(lane4Cars[i].x, lane4Cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
-		lane4Cars[i].x += 10;
-	}
-	for (i in lane5Cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(lane5Cars[i].x, lane5Cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
-		lane5Cars[i].x += 7;
-	}
-	for (i in lane6Cars) {
-		c.fillStyle = "#FF0000";
-		c.beginPath();
-		c.arc(lane6Cars[i].x, lane6Cars[i].y, 20, 0, 2*Math.PI);
-		c.fill();
-		c.closePath();
-		lane6Cars[i].x += 4;
+		cars[i].x += cars[i].speed;
 	}
 }
 
@@ -160,33 +88,8 @@ function moveFrog (key) {
 }
 
 function collision () {
-	for (i in lane1Cars) {
-		if (Math.sqrt( Math.pow(lane1Cars[i].x - frogx, 2) + Math.pow(lane1Cars[i].y - frogy, 2) ) < 40) {
-			gameLose();
-		}
-	}
-	for (i in lane2Cars) {
-		if (Math.sqrt( Math.pow(lane2Cars[i].x - frogx, 2) + Math.pow(lane2Cars[i].y - frogy, 2) ) < 40) {
-			gameLose();
-		}
-	}
-	for (i in lane3Cars) {
-		if (Math.sqrt( Math.pow(lane3Cars[i].x - frogx, 2) + Math.pow(lane3Cars[i].y - frogy, 2) ) < 40) {
-			gameLose();
-		}
-	}
-	for (i in lane4Cars) {
-		if (Math.sqrt( Math.pow(lane4Cars[i].x - frogx, 2) + Math.pow(lane4Cars[i].y - frogy, 2) ) < 40) {
-			gameLose();
-		}
-	}
-	for (i in lane5Cars) {
-		if (Math.sqrt( Math.pow(lane5Cars[i].x - frogx, 2) + Math.pow(lane5Cars[i].y - frogy, 2) ) < 40) {
-			gameLose();
-		}
-	}
-	for (i in lane6Cars) {
-		if (Math.sqrt( Math.pow(lane6Cars[i].x - frogx, 2) + Math.pow(lane6Cars[i].y - frogy, 2) ) < 40) {
+	for (i in cars) {
+		if (Math.sqrt( Math.pow(cars[i].x - frogx, 2) + Math.pow(cars[i].y - frogy, 2) ) < 40) {
 			gameLose();
 		}
 	}
@@ -212,7 +115,8 @@ function gameLose () {
 	}
 }
 
-function Car (x, y) {
+function Car (x, y, speed) {
 	this.x = x;
 	this.y = y;
+	this.speed = speed;
 }
