@@ -1,5 +1,6 @@
 var canvas = document.getElementById("game");
 var c = canvas.getContext("2d");
+var gameTimer;
 var lives = 5;
 var score = 0;
 var frogx = 250;
@@ -18,7 +19,7 @@ function main() {
 	document.addEventListener("keydown", function (e) {
 		moveFrog(e.keyCode);
 	});
-	var gameTimer = setInterval(gameStart, 50);
+	gameTimer = setInterval(function () { gameStart(); }, 50);
 }
 
 function gameStart() {
@@ -144,32 +145,71 @@ function drawFrog () {
 function moveFrog (key) {
 	switch (key) {
 		case 38:
-		frogy > 20 ? frogy -= 3 : gameWin();
+		frogy > 20 ? frogy -= 4 : gameWin();
 		break;
 		case 40:
-		if (frogy < 380) frogy += 3;
+		if (frogy < 380) frogy += 4;
 		break;
 		case 37:
-		if (frogx > 0) frogx -= 3;
+		if (frogx > 0) frogx -= 4;
 		break;
 		case 39:
-		if (frogx < 480) frogx += 3;
+		if (frogx < 480) frogx += 4;
 		break;
 	}
 }
 
 function collision () {
-	
+	for (i in lane1Cars) {
+		if (Math.sqrt( Math.pow(lane1Cars[i].x - frogx, 2) + Math.pow(lane1Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
+	for (i in lane2Cars) {
+		if (Math.sqrt( Math.pow(lane2Cars[i].x - frogx, 2) + Math.pow(lane2Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
+	for (i in lane3Cars) {
+		if (Math.sqrt( Math.pow(lane3Cars[i].x - frogx, 2) + Math.pow(lane3Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
+	for (i in lane4Cars) {
+		if (Math.sqrt( Math.pow(lane4Cars[i].x - frogx, 2) + Math.pow(lane4Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
+	for (i in lane5Cars) {
+		if (Math.sqrt( Math.pow(lane5Cars[i].x - frogx, 2) + Math.pow(lane5Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
+	for (i in lane6Cars) {
+		if (Math.sqrt( Math.pow(lane6Cars[i].x - frogx, 2) + Math.pow(lane6Cars[i].y - frogy, 2) ) < 40) {
+			gameLose();
+		}
+	}
 }
 
 function gameWin() {
 	frogx = 250;
 	frogy = 375;
-	score += 1;
+	score++;
 }
 
 function gameLose () {
-
+	lives--;
+	frogx = 250;
+	frogy = 375;
+	if (lives <= 0) {
+		c.fillStyle = "#000000";
+		c.fillRect(0, 0, 500, 400);
+		c.fillStyle = "#FFFFFF";
+		c.fillText("GAME OVER", 200, 190);
+		c.fillText("SCORE: " + score, 200, 210);
+		clearInterval(gameTimer);
+	}
 }
 
 function Car (x, y) {
